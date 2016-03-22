@@ -17,15 +17,15 @@ class CustomerRepositoryServiceImpl implements CustomerRepositoryService {
 
 	@Inject
 	new(CustomerRepository customerRepository) {
-		this.repo = customerRepository;
+		this.repo = customerRepository
 	}
 
 	override void save(Customer customer) {
-		repo.save(customer);
+		repo.save(customer)
 	}
 
 	override Customer findByUsername(String username) {
-		repo.findByUsernameIgnoreCase(username);
+		repo.findByUsernameIgnoreCase(username)
 	}
 
 	override void delete(Long id) {
