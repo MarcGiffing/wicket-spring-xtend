@@ -68,6 +68,9 @@ Which results in:
 And can be used:
 
 ```java
+
+import static package.CustomerSpecs.*
+
 class CustomerRepositoryServiceImpl implements CustomerRepositoryService {
 	
 	@Inject
