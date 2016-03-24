@@ -12,6 +12,7 @@ import org.eclipse.xtend.lib.macro.declaration.ClassDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.CompilationUnit;
 import org.eclipse.xtend.lib.macro.declaration.FieldDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.MutableClassDeclaration;
+import org.eclipse.xtend.lib.macro.declaration.Type;
 import org.eclipse.xtend.lib.macro.declaration.TypeReference;
 import org.eclipse.xtend.lib.macro.file.Path;
 import org.eclipse.xtend2.lib.StringConcatenation;
@@ -63,17 +64,8 @@ public class EntityJpaMetaModelProcessor extends AbstractClassProcessor implemen
           Iterable<? extends FieldDeclaration> _declaredFields = clazz.getDeclaredFields();
           for(final FieldDeclaration field : _declaredFields) {
             _builder.append("\t");
-            _builder.append("public static volatile SingularAttribute<");
-            String _simpleName_1 = clazz.getSimpleName();
-            _builder.append(_simpleName_1, "\t");
-            _builder.append(", ");
-            TypeReference _type = field.getType();
-            Object _genericType = this.genericType(_type);
-            _builder.append(_genericType, "\t");
-            _builder.append("> ");
-            String _simpleName_2 = field.getSimpleName();
-            _builder.append(_simpleName_2, "\t");
-            _builder.append(";");
+            String _fieldDescription = this.fieldDescription(field, clazz, context);
+            _builder.append(_fieldDescription, "\t");
             _builder.newLineIfNotEmpty();
           }
         }
@@ -84,6 +76,43 @@ public class EntityJpaMetaModelProcessor extends AbstractClassProcessor implemen
         _builder.newLine();
         context.setContents(file, _builder);
       }
+    }
+  }
+  
+  public String fieldDescription(final FieldDeclaration field, final ClassDeclaration clazz, @Extension final CodeGenerationContext context) {
+    Type collectionClass = context.findTypeGlobally(Iterable.class);
+    TypeReference _type = field.getType();
+    Type _type_1 = _type.getType();
+    boolean _isAssignableFrom = collectionClass.isAssignableFrom(_type_1);
+    if (_isAssignableFrom) {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("public static volatile ListAttribute<");
+      String _simpleName = clazz.getSimpleName();
+      _builder.append(_simpleName, "");
+      _builder.append(", ");
+      TypeReference _type_2 = field.getType();
+      List<TypeReference> _actualTypeArguments = _type_2.getActualTypeArguments();
+      TypeReference _get = _actualTypeArguments.get(0);
+      _builder.append(_get, "");
+      _builder.append("> ");
+      String _simpleName_1 = field.getSimpleName();
+      _builder.append(_simpleName_1, "");
+      _builder.append(";");
+      return _builder.toString();
+    } else {
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("public static volatile SingularAttribute<");
+      String _simpleName_2 = clazz.getSimpleName();
+      _builder_1.append(_simpleName_2, "");
+      _builder_1.append(", ");
+      TypeReference _type_3 = field.getType();
+      Object _genericType = this.genericType(_type_3);
+      _builder_1.append(_genericType, "");
+      _builder_1.append("> ");
+      String _simpleName_3 = field.getSimpleName();
+      _builder_1.append(_simpleName_3, "");
+      _builder_1.append(";");
+      return _builder_1.toString();
     }
   }
   

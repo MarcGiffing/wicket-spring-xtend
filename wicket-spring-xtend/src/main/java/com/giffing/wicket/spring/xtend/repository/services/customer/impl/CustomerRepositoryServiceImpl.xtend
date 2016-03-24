@@ -9,12 +9,16 @@ import org.springframework.stereotype.Repository
 
 import static com.giffing.wicket.spring.xtend.repository.services.customer.specs.CustomerSpecs.*
 import static org.springframework.data.jpa.domain.Specifications.*
+import com.giffing.wicket.spring.xtend.model.Group
+import org.springframework.data.jpa.domain.Specifications
 
 @Repository
 class CustomerRepositoryServiceImpl implements CustomerRepositoryService {
 
 	CustomerRepository repo
-
+	
+	
+	
 	@Inject
 	new(CustomerRepository customerRepository) {
 		this.repo = customerRepository
@@ -33,12 +37,9 @@ class CustomerRepositoryServiceImpl implements CustomerRepositoryService {
 	}
 
 	override List<Customer> findAll() {
+		var it = where(usernameEquals(""))
 		repo.findAll(
-			where(
-				usernameLike("yea")
-			).and(
-				firstnameEquals("asd")
-			)
+			and(firstnameEquals("asd"))
 		)
 	}
 

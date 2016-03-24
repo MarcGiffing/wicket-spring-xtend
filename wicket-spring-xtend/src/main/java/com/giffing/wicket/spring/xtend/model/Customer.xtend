@@ -6,6 +6,9 @@ import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 import org.eclipse.xtend.lib.annotations.Accessors
+import java.util.ArrayList
+import java.util.List
+import javax.persistence.ManyToOne
 
 @Entity
 @Accessors
@@ -19,5 +22,12 @@ class Customer {
 	String firstname
 	String lastname
 	boolean active
+	
+	@ManyToOne
+	List<Group> groups = new ArrayList
+	
+	def addGroup(Group group){
+		getGroups.add = group
+	}
 }
 
