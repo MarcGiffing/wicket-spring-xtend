@@ -1,6 +1,9 @@
 # wicket-spring-xtend
 
-playing around with xtend and xtends code generation via active annotations.
+Playing around with xtend and xtends code generation via active annotations.
+
+The aim of this project is to reduce some boilerplate code which can automatically generated
+with the help of xtend and xtends active annotation
 
 
 ## Active annotations:
