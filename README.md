@@ -114,3 +114,50 @@ public class BootStrapResourceReference extends JavaScriptResourceReference{
 	}
 }
 ```
+
+### Auto Injection in Constructors:
+
+```java
+@WicketHomePage
+@AutoInjector
+class HomePage extends BasePage {
+
+	new(){
+		application
+	}
+	
+	new(PageParameters param){
+		application
+	}
+}
+```
+
+Generates: 
+(It's not possible to extend the constructor directly. Helper methods created)
+
+
+```java
+@WicketHomePage
+@AutoInjector
+@SuppressWarnings("all")
+public class HomePage extends BasePage {
+  public HomePage() {
+    construtor_0();
+    Injector.get().inject(this);
+  }
+  
+  public HomePage(final PageParameters param) {
+    construtor_1(param);
+    Injector.get().inject(this);
+  }
+  
+  public void construtor_0() {
+    this.getApplication();
+  }
+  
+  public void construtor_1(final PageParameters param) {
+    this.getApplication();
+  }
+}
+
+```
