@@ -1,6 +1,5 @@
 package com.giffing.wicket.spring.xtend.activeannotations
 
-import com.giffing.wicket.spring.xtend.activeannotations.domain.FilterService
 import com.google.common.annotations.Beta
 import java.lang.annotation.Target
 import org.eclipse.xtend.lib.macro.AbstractInterfaceProcessor
@@ -24,10 +23,10 @@ class FilterServiceProcessor extends AbstractInterfaceProcessor {
 		val domainClass = annotatedInterface.findAnnotation(findTypeGlobally(FilterServiceGen));
 		val className = domainClass.getClassValue("value")
 		
-		var domainIntefaceType = newTypeReference(FilterService, className, className, className)
-		if(domainIntefaceType != null){
-			annotatedInterface.extendedInterfaces = annotatedInterface.extendedInterfaces + #[domainIntefaceType]
-		}
+//		var domainIntefaceType = newTypeReference(FilterService, className, className, className)
+//		if(domainIntefaceType != null){
+//			annotatedInterface.extendedInterfaces = annotatedInterface.extendedInterfaces + #[domainIntefaceType]
+//		}
 	}
 	
 }

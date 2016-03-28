@@ -1,7 +1,5 @@
 package com.giffing.wicket.spring.xtend.activeannotations
 
-import com.giffing.wicket.spring.xtend.activeannotations.domain.DefaultFilter
-import com.giffing.wicket.spring.xtend.activeannotations.domain.Sort
 import com.google.common.annotations.Beta
 import java.lang.annotation.Target
 import java.util.List
@@ -12,6 +10,8 @@ import org.eclipse.xtend.lib.macro.CodeGenerationParticipant
 import org.eclipse.xtend.lib.macro.declaration.ClassDeclaration
 import org.eclipse.xtend.lib.macro.declaration.FieldDeclaration
 import org.eclipse.xtend.lib.macro.declaration.TypeReference
+import java.io.Serializable
+import com.giffing.wicket.spring.xtend.activeannotations.domain.Fields
 
 @Beta
 @Target(TYPE)
@@ -26,39 +26,42 @@ class FilterModelProcessor extends AbstractClassProcessor implements CodeGenerat
 		for (clazz : annotatedSourceElements) {
 			
 			val filePath = clazz.compilationUnit.filePath
-			val filterFile = filePath.targetFolder.append(clazz.qualifiedName.replace('.', '/') + "Filter.java")
-			filterFile.contents = '''
-				package «clazz.compilationUnit.packageName»;
-				
-				public class «clazz.simpleName»Filter extends «DefaultFilter.canonicalName» {
-					«FOR field : clazz.declaredFields»
-						«field.generateVariable»
-					«ENDFOR»
-					
-				}
-				
-			'''
+//			val filterFile = filePath.targetFolder.append(clazz.qualifiedName.replace('.', '/') + "Filter.java")
+//			filterFile.contents = '''
+//				package «clazz.compilationUnit.packageName»;
+//				
+//				public class «clazz.simpleName»Filter extends «DefaultFilter.canonicalName» {
+//					«FOR field : clazz.declaredFields»
+//						«field.generateVariable»
+//					«ENDFOR»
+//					
+//				}
+//				
+//			'''
 			
-			val sortFile = filePath.targetFolder.append(clazz.qualifiedName.replace('.', '/') + "Sort.java")
+			val sortFile = filePath.targetFolder.append(clazz.qualifiedName.replace('.', '/') + "Fields.java")
 			sortFile.contents = '''
 				package «clazz.compilationUnit.packageName»;
 				
-				public enum «clazz.simpleName»Sort implements «Sort.canonicalName» {
+				public enum «clazz.simpleName»Fields implements «Fields.canonicalName» {
 					
 					«FOR field : clazz.declaredFields BEFORE '' SEPARATOR ',' AFTER ';'»
-						«field.simpleName.toUpperCase»("«field.simpleName»")
+						«field.simpleName»("«field.simpleName»", «field.type.name».class)
 					«ENDFOR»
 					
-					private String sortName;
+					private String fieldName;
 						
-					«clazz.simpleName»Sort(String sortName){
-						this.sortName = sortName;
+					«clazz.simpleName»Fields(String fieldName, Object type){
+						this.fieldName = fieldName;
+						this.type = type;
 					}
-				
-					@Override
-					public String getFieldName() {
-						return this.sortName;
+					
+					public String getFieldName(){
+						return this.fieldName;
 					}
+					
+					public Class getType() {
+						
 					
 					
 				}
