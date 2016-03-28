@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory
 import org.eclipse.xtend.lib.macro.declaration.ClassDeclaration
 import java.util.List
 import org.eclipse.xtend.lib.macro.CodeGenerationParticipant
+import org.eclipse.xtend.lib.macro.ValidationContext
 
 /**
  * Adds a Logger field to this class  
@@ -26,6 +27,27 @@ annotation JavascriptReference {
 
 class JavascriptReferenceProcessor extends AbstractClassProcessor implements CodeGenerationParticipant<ClassDeclaration> {
 
+	override doValidate(ClassDeclaration annotatedClass, extension ValidationContext context) {
+		super.doValidate(annotatedClass, context)
+		
+		val filePath = annotatedClass.compilationUnit.filePath
+		
+		val domainClass = annotatedClass.findAnnotation(findTypeGlobally(JavascriptReference));
+		val resourceFileString = domainClass.getStringValue("value")
+		
+		if(resourceFileString.isNullOrEmpty){
+			annotatedClass.addError("Not resource file name specified")
+			return
+		}
+		
+		var fileName = annotatedClass.compilationUnit.packageName.replace('.', '/') + "/" + resourceFileString
+		var resourceFile = filePath.sourceFolder.append(fileName)
+		
+		if(!resourceFile.exists){
+			annotatedClass.addWarning("Could not find javascript file: " + resourceFileString)
+		}
+		
+	}
 
 	override doGenerateCode(List<? extends ClassDeclaration> annotatedSourceElements,
 		extension CodeGenerationContext context) {
