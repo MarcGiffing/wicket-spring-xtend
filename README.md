@@ -88,3 +88,29 @@ class CustomerRepositoryServiceImpl implements CustomerRepositoryService {
 	}
 }
 ```
+
+### Generation of Wicket Javascript Resource Reference
+
+```java
+@JavascriptReference("js/dummy.js")
+class Bootstrap {
+
+}
+```
+
+Generates:
+
+```java
+public class BootStrapResourceReference extends JavaScriptResourceReference{
+
+	private static final BootStrapResourceReference instance = new BootStrapResourceReference();
+	
+	public static BootStrapResourceReference get() {
+		return instance;
+	}
+	
+	public BootStrapResourceReference() {
+		super(BootStrapResourceReference.class, "js/dummy.js");
+	}
+}
+```
