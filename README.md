@@ -161,3 +161,10 @@ public class HomePage extends BasePage {
 }
 
 ```
+
+### Adding/Queing Components
+
+```java
+new BookmarkablePageLink("link2", typeof(HomePage)).a
+new BookmarkablePageLink("link1", typeof(HomePage)).q
+```
