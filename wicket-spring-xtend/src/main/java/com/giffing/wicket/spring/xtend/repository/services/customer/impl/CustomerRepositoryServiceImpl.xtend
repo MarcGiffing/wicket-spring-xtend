@@ -17,8 +17,6 @@ class CustomerRepositoryServiceImpl implements CustomerRepositoryService {
 
 	CustomerRepository repo
 	
-	
-	
 	@Inject
 	new(CustomerRepository customerRepository) {
 		this.repo = customerRepository
@@ -37,9 +35,9 @@ class CustomerRepositoryServiceImpl implements CustomerRepositoryService {
 	}
 
 	override List<Customer> findAll() {
-		var it = where(usernameEquals(""))
 		repo.findAll(
-			and(firstnameEquals("asd"))
+			where(usernameEquals(""))
+			.and(firstnameEquals("asd"))
 		)
 	}
 

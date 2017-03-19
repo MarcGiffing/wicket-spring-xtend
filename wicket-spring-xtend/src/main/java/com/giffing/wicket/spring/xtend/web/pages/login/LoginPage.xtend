@@ -24,7 +24,7 @@ class LoginPage extends BasePage {
 			continueToOriginalDestination()
 		}
 
-		queue(new LoginForm("loginForm"))
+		new LoginForm("loginForm").q
 	}
 
 	@Accessors

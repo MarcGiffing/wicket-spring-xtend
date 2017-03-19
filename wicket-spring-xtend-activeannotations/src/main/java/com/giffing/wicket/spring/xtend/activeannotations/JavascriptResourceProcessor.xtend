@@ -44,7 +44,7 @@ class JavascriptReferenceProcessor extends AbstractClassProcessor implements Cod
 		var resourceFile = filePath.sourceFolder.append(fileName)
 		
 		if(!resourceFile.exists){
-			annotatedClass.addWarning("Could not find javascript file: " + resourceFileString)
+			annotatedClass.addError("Could not find javascript file: " + resourceFileString)
 		}
 		
 	}
