@@ -24,6 +24,7 @@ class AutoInjectorProcessor extends AbstractClassProcessor {
 
 	override doTransform(MutableClassDeclaration cls, extension TransformationContext context) {
 		
+		
 		cls.declaredConstructors.forEach[constructor, index |
 			val oldBody = constructor.body
 			val subMethod = cls.addMethod("construtor_" + index)[

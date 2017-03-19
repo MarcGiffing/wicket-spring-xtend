@@ -27,7 +27,8 @@ class Customer {
 	List<Group> groups = new ArrayList
 	
 	def addGroup(Group group){
-		getGroups.add = group
+		groups.add = group
 	}
+	
 }
 

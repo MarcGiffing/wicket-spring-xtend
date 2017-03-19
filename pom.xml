@@ -4,11 +4,12 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.3.3.RELEASE</version>
+		<version>1.5.2.RELEASE</version>
 		<relativePath />
 	</parent>
 	<groupId>com.giffing.wicket-spring-xtend</groupId>
 	<artifactId>wicket-spring-xtend-parent</artifactId>
+	<version>0.0.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<modules>

@@ -21,6 +21,7 @@ import org.eclipse.xtend.lib.macro.declaration.TypeReference
 annotation EntityMetaModel {
 }
 
+
 class EntityJpaMetaModelProcessor extends AbstractClassProcessor implements CodeGenerationParticipant<ClassDeclaration> {
 	
 	override doTransform(MutableClassDeclaration cls, extension TransformationContext context) {
@@ -46,7 +47,6 @@ class EntityJpaMetaModelProcessor extends AbstractClassProcessor implements Code
 					«ENDFOR»
 					
 				}
-				
 			'''
 		}
 	}

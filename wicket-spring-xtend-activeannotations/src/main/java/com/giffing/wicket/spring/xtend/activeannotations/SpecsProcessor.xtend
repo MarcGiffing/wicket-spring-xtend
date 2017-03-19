@@ -45,15 +45,16 @@ class SpecsProcessor extends AbstractClassProcessor {
 		val specClassName = specAnnoation.getClassValue("value")
 		val joinArray = specAnnoation.getAnnotationArrayValue("joins")
 		val collectionClass = findTypeGlobally(Iterable);
-		specClassName.declaredResolvedMethods.forEach[
-			if(it.resolvedParameters.size == 1) {
-				it.resolvedParameters.
+		specClassName.declaredResolvedMethods.forEach[ m |
+			if(m.simpleSignature.toLowerCase.startsWith("set") && m.resolvedParameters.size == 1) {
+				val fieldNameWithoutSet = m.simpleSignature.toLowerCase.substring(3)
+				val fieldName = fieldNameWithoutSet.substring(0, fieldNameWithoutSet.indexOf('('))
+				m.resolvedParameters.
 					forEach[
 						if(!collectionClass.isAssignableFrom(it.resolvedType.type)) {
-							val fieldName = it.declaration.simpleName
 							val fieldType = findTypeGlobally(it.declaration.type.name)
 							val customerSuperName = findTypeGlobally(specClassName.name+"_")
-								
+		
 							val config = new MethodConfig => [
 								it.fieldName = fieldName
 								metaModelName = specClassName.type
@@ -65,7 +66,10 @@ class SpecsProcessor extends AbstractClassProcessor {
 							switch (it.declaration.type.name) {
 								case "java.lang.String": stringPredicate(cls, context, specClassName,  config)
 								case "boolean": booleanPredicate(cls, context, specClassName,  config)
-								case "java.lang.Boolean": booleanPredicate(cls, context, specClassName,  config) 
+								case "java.lang.Boolean": booleanPredicate(cls, context, specClassName,  config)
+								case "java.lang.Integer": integerPredicate(cls, context, specClassName,  config)  
+								case "java.lang.Long": longPredicate(cls, context, specClassName,  config)
+								
 								
 							}
 						}
@@ -132,6 +136,26 @@ class SpecsProcessor extends AbstractClassProcessor {
 	}
 	
 	
+	def longPredicate(MutableClassDeclaration cls, extension TransformationContext context, TypeReference specClassName, MethodConfig config) {
+		var clone1 = config.clone as MethodConfig
+		clone1.compareType = CompareType.EQUALS
+		addSpecMethod(cls, context, clone1, false)
+		
+		var clone4 = config.clone as MethodConfig
+		clone4.compareType = CompareType.IS_NULL
+		addSpecMethod(cls, context, clone4, false)
+	}
+	
+	
+	def integerPredicate(MutableClassDeclaration cls, extension TransformationContext context, TypeReference specClassName, MethodConfig config) {
+		var clone1 = config.clone as MethodConfig
+		clone1.compareType = CompareType.EQUALS
+		addSpecMethod(cls, context, clone1, false)
+		
+		var clone4 = config.clone as MethodConfig
+		clone4.compareType = CompareType.IS_NULL
+		addSpecMethod(cls, context, clone4, false)
+	}
 	
 	def booleanPredicate(MutableClassDeclaration cls, extension TransformationContext context, TypeReference specClassName, MethodConfig config) {
 		
